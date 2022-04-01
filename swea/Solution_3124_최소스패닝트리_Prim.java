@@ -8,26 +8,24 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
-// 소요 시간 : 4,593 ms
-// 메모리 사용량 : 174,720 kb
-class Edge_3124_1 implements Comparable<Edge_3124_1> {
-    int to;
-    int w;
-
-    Edge_3124_1(int to, int w) {
-        this.to = to;
-        this.w = w;
-    }
-
-    @Override
-    public int compareTo(Edge_3124_1 o) {
-        return Integer.compare(this.w, o.w);
-    }
-}
-
+// 4,593 ms, 174,720 kb
 public class Solution_3124_최소스패닝트리_Prim {
     private static int V, E;
-    private static List<Edge_3124_1>[] adjList;
+    private static List<Edge>[] adjList;
+
+    private static class Edge implements Comparable<Edge> {
+        int to, w;
+
+        Edge(int to, int w) {
+            this.to = to;
+            this.w = w;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return Integer.compare(this.w, o.w);
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -47,8 +45,8 @@ public class Solution_3124_최소스패닝트리_Prim {
                 int A = Integer.parseInt(st.nextToken());
                 int B = Integer.parseInt(st.nextToken());
                 int C = Integer.parseInt(st.nextToken());
-                adjList[A].add(new Edge_3124_1(B, C));
-                adjList[B].add(new Edge_3124_1(A, C));
+                adjList[A].add(new Edge(B, C));
+                adjList[B].add(new Edge(A, C));
             }
             sb.append("#").append(tc).append(" ").append(prim()).append("\n");
         }
@@ -56,16 +54,16 @@ public class Solution_3124_최소스패닝트리_Prim {
     }
 
     private static long prim() {
-        PriorityQueue<Edge_3124_1> pq = new PriorityQueue<>();
+        PriorityQueue<Edge> pq = new PriorityQueue<>();
         boolean[] visited = new boolean[V + 1];
-        pq.offer(new Edge_3124_1(1, 0));
+        pq.offer(new Edge(1, 0));
         long sum = 0;
         while (!pq.isEmpty()) {
-            Edge_3124_1 cur = pq.poll();
+            Edge cur = pq.poll();
             if (visited[cur.to]) continue;
             visited[cur.to] = true;
             sum += cur.w;
-            for (Edge_3124_1 next : adjList[cur.to]) {
+            for (Edge next : adjList[cur.to]) {
                 pq.offer(next);
             }
         }
