@@ -8,28 +8,25 @@ import java.util.Collections;
 import java.util.List;
 import java.util.StringTokenizer;
 
-// 소요 시간 : 1,667 ms
-// 메모리 사용량 : 118,068 kb
-class Edge_3124_2 implements Comparable<Edge_3124_2> {
-    int from;
-    int to;
-    int w;
-
-    Edge_3124_2(int from, int to, int w) {
-        this.from = from;
-        this.to = to;
-        this.w = w;
-    }
-
-    @Override
-    public int compareTo(Edge_3124_2 o) {
-        return Integer.compare(this.w, o.w);
-    }
-}
-
+// 1,667 ms, 118,068 kb
 public class Solution_3124_최소스패닝트리_Kruskal {
     private static int V, E;
     private static int[] parents;
+
+    private static class Edge implements Comparable<Edge> {
+        int from, to, w;
+
+        Edge(int from, int to, int w) {
+            this.from = from;
+            this.to = to;
+            this.w = w;
+        }
+
+        @Override
+        public int compareTo(Edge o) {
+            return Integer.compare(this.w, o.w);
+        }
+    }
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -40,18 +37,18 @@ public class Solution_3124_최소스패닝트리_Kruskal {
             st = new StringTokenizer(br.readLine());
             V = Integer.parseInt(st.nextToken());
             E = Integer.parseInt(st.nextToken());
-            List<Edge_3124_2> list = new ArrayList<>();
+            List<Edge> list = new ArrayList<>();
             for (int i = 0; i < E; i++) {
                 st = new StringTokenizer(br.readLine());
                 int A = Integer.parseInt(st.nextToken());
                 int B = Integer.parseInt(st.nextToken());
                 int C = Integer.parseInt(st.nextToken());
-                list.add(new Edge_3124_2(A, B, C));
+                list.add(new Edge(A, B, C));
             }
             Collections.sort(list);
             makeSet();
             long ans = 0, count = 0;
-            for (Edge_3124_2 e : list) {
+            for (Edge e : list) {
                 if (union(e.from, e.to)) {
                     ans += e.w;
                     if (++count == V - 1) break;
